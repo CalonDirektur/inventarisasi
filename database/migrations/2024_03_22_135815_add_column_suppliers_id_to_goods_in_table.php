@@ -24,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('goods_in', function (Blueprint $table) {
             $table->dropColumn('supplier_id');
+            $table->dropForeign(['supplier_id']); // Hapus kunci asing terlebih dahulu
         });
     }
 };

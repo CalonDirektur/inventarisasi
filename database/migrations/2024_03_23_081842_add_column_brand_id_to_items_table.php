@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('items', function (Blueprint $table) {
-            $table -> unsignedBigInteger('brand_id');
-            $table -> foreign('brand_id')->references('id')->on('brands');
+            $table->unsignedBigInteger('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands');
         });
     }
 
@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('items', function (Blueprint $table) {
-            $table -> dropColumn('brand_id');
+            $table->dropColumn('brand_id');
+            $table->dropForeign(['brand_id']); // Hapus kunci asing terlebih dahulu
         });
     }
 };
