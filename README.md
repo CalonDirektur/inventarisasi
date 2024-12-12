@@ -23,8 +23,8 @@ Ikuti langkah-langkah berikut untuk mengatur aplikasi ini di lingkungan lokal An
 
 1. **Ubah Konfigurasi Database**: Sesuaikan konfigurasi database di file `.env`.
 2. **Perbarui Dependensi**: Jalankan perintah berikut untuk memperbarui dependensi:
-   bash composer update
-3. **Migrasi Database**: Jalankan perintah berikut untuk melakukan migrasi dan mengisi data awal: `bash php artisan migrate --seed`
+   `composer update`
+3. **Migrasi Database**: Jalankan perintah berikut untuk melakukan migrasi dan mengisi data awal: `php artisan migrate --seed`
 4. **Jalankan Server**: Jalankan perintah berikut untuk memulai server lokal: `php artisan serve`
 5. **Buka Aplikasi**: Akses aplikasi di browser Anda melalui URL: `http://localhost:8000`
 6. **Akun\*** bisa dieksplorasi di file `database/seeders/UserSeeder.php`
