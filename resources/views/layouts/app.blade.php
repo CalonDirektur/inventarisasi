@@ -38,6 +38,9 @@
   </script>
   <!-- sweetalert -->
   <script src="{{asset('theme/alert/js/sweetalert2.js')}}"></script>
+
+   <!-- Select2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <link rel="stylesheet" href="{{asset('theme/dist/css/switch.css')}}">
   <link rel="stylesheet" href="{{ asset("localizations/flags.css") }}">
   <style>
@@ -45,6 +48,126 @@
             background-image: url('{{ asset("localizations/flags.png") }}');
         }
   </style>
+  <style>
+    .signature-pad {
+        border: 1px solid #ccc; /* Border for the signature pad */
+        border-radius: 5px;
+        width: 100%;
+        height: 260px; /* Set height for the canvas */
+        background-color: #fff; /* Background color for visibility */
+    }
+    .wrapper_pad {
+        position: relative;
+        width: 100%;
+        height: 260px; /* Match the height of the canvas */
+    }
+    canvas {
+        width: 100%;
+        height: 100%;
+        display: block; /* Ensure the canvas is a block element */
+    }
+</style>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+  
+
+<!-- <script>
+    $(document).ready(function() {
+        // Function to initialize signature pads
+        function initializeSignaturePads() {
+            var canvasPeminjam = document.getElementById('signature-pad-peminjam');
+            var signaturePadPeminjam = new SignaturePad(canvasPeminjam);
+            var canvasPenanggungJawab = document.getElementById('signature-pad-penanggung-jawab');
+            var signaturePadPenanggungJawab = new SignaturePad(canvasPenanggungJawab);
+
+            // Set canvas size for better precision
+            resizeCanvas(canvasPeminjam);
+            resizeCanvas(canvasPenanggungJawab);
+
+            // Clear signature pad for Peminjam
+            $("#clear-peminjam").click(function() {
+                signaturePadPeminjam.clear();
+            });
+
+            // Clear signature pad for Penanggung Jawab
+            $("#clear-penanggung-jawab").click(function() {
+                signaturePadPenanggungJawab.clear();
+            });
+
+            // On form submit, get the signature data
+            $("form").submit(function() {
+                // Check if signatures are required
+                var peminjamSignatureExists = $("#tanda_tangan_peminjam").val() !== '';
+                var penanggungJawabSignatureExists = $("#tanda_tangan_penanggung_jawab").val() !== '';
+
+                if (!peminjamSignatureExists && signaturePadPeminjam.isEmpty()) {
+                    alert("Tanda Tangan Peminjam Kosong! Silahkan tanda tangan terlebih dahulu.");
+                    return false; // Prevent form submission
+                }
+                if (!penanggungJawabSignatureExists && signaturePadPenanggungJawab.isEmpty()) {
+                    alert("Tanda Tangan Penanggung Jawab Kosong! Silahkan tanda tangan terlebih dahulu.");
+                    return false; // Prevent form submission
+                }
+
+                // Store the signature data in hidden fields
+                var peminjamData = signaturePadPeminjam.toDataURL('image/png');
+                var penanggungJawabData = signaturePadPenanggungJawab.toDataURL('image/png');
+
+                $("#tanda_tangan_peminjam").val(peminjamData);
+                $("#tanda_tangan_penanggung_jawab").val(penanggungJawabData);
+            });
+            
+
+            
+        }
+
+        // Function to resize canvas
+        function resizeCanvas(canvas) {
+            var ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+        }
+
+        // Initialize signature pads
+        initializeSignaturePads();
+
+        // Resize canvas on window resize
+        $(window).resize(function() {
+            resizeCanvas(document.getElementById('signature-pad-peminjam'));
+            resizeCanvas(document.getElementById('signature-pad-penanggung-jawab'));
+        });
+
+        // JavaScript to populate the merk, model, and nomor seri based on selected item
+        document.getElementById('item_id').addEventListener('change', function() {
+            const itemId = this.value;
+            if (itemId) {
+                fetch(`/items/${itemId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('merk').value = data.brand_id; // Assuming brand_id is the brand name
+                        document.getElementById('model').value = data.model_barang;
+                        document.getElementById('nomor_seri').value = data.serial_number;
+                    });
+            } else {
+                document.getElementById('merk').value = '';
+                document.getElementById('model').value = '';
+                document.getElementById('nomor_seri').value = '';
+            }
+        });
+    });
+</script> -->
+
+
+@yield('scripts')   
+  
+  
+
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 

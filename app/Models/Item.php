@@ -11,11 +11,29 @@ class Item extends Model
 {
     use HasFactory;
     protected $table = 'items';
+    // protected $fillable = [
+    //     'name','image','code',
+    //     'price','quantity','category_id','brand_id',
+    //     'unit_id',
+    //     'active'
+    // ];
+
     protected $fillable = [
-        'name','image','code',
-        'price','quantity','category_id','brand_id',
+        'name',
+        'image',
+        'code',
+        'price',
+        'quantity',
+        'category_id',
+        'brand_id',
         'unit_id',
-        'active'
+        'active',
+        'serial_number', // New field
+        'model_barang', // New field
+        'lokasi_barang', // New field
+        'pengguna_barang', // New field
+        'kondisi_barang', // New field
+        'estimasi_tahun', // New field
     ];
 
     public function category(): BelongsTo

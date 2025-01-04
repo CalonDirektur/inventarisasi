@@ -5,7 +5,7 @@
         <!-- Small boxes (Stat box) -->
         <div class="row">
 
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-green">
               <div class="inner">
@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-red">
               <div class="inner">
@@ -35,7 +35,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-blue">
               <div class="inner">
@@ -50,7 +50,7 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-pink">
               <div class="inner">
@@ -67,8 +67,8 @@
 
 
 
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
+          <!-- <div class="col-lg-4 col-6">
+            
             <div class="small-box bg-green">
               <div class="inner">
                 <h3>{{$goodsin}}</h3>
@@ -82,8 +82,8 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
+          <div class="col-lg-4 col-6">
+            
             <div class="small-box bg-orange">
               <div class="inner" style="color:white !important;">
                 <h3>{{$goodsout}}</h3>
@@ -95,9 +95,9 @@
               </div>
               <a href="{{route('transaksi.keluar')}}" class="small-box-footer" style="color:white !important;">{{ __('messages.more-info') }} <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
+          </div> -->
 
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-purple">
               <div class="inner">
@@ -112,8 +112,8 @@
             </div>
           </div>
 
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
+          <!-- <div class="col-lg-4 col-6">
+            
             <div class="small-box bg-purple">
               <div class="inner">
                 <h3>{{$supplier}}</h3>
@@ -125,10 +125,10 @@
               </div>
               <a href="{{route('customer')}}" class="small-box-footer">{{ __('messages.more-info') }} <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
+          </div> -->
 
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
+          <!-- <div class="col-lg-4 col-6">
+            
             <div class="small-box bg-yellow" style="color:white !important;">
               <div class="inner">
                 <h3>{{$staffCount}}</h3>
@@ -140,9 +140,9 @@
               </div>
               <a href="{{route('settings.employee')}}" class="small-box-footer" style="color:white !important;">{{ __('messages.more-info') }} <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-          </div>
+          </div> -->
 
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-4 col-6">
             <!-- small box -->
             <div class="small-box bg-yellow" style="color:white !important;">
               <div class="inner">
@@ -159,7 +159,7 @@
   </div>
 </div>
 
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12 col-lg-6">
       <div class="card">
@@ -214,7 +214,7 @@
 
     </div>
   </div>
-</div>
+</div> -->
 
 <script src="{{asset('theme/plugins/chart.js/Chart.min.js')}}"></script>
 <script>
@@ -231,6 +231,33 @@
   }
 
 $(document).ready(function() {
+
+    function getTotalPrice() {
+      $.ajax({
+          url: `{{ route('total.price') }}`,
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              // Update the total price display
+              $("#total-pendapatan-bulan-ini").text(formatIDR(data.total));
+          },
+          error: function(err) {
+              console.error(err);
+              Swal.fire({
+                  position: "center",
+                  icon: "error",
+                  title: "Terjadi kesalahan saat memuat total harga!",
+                  text: "Silakan coba lagi.",
+                  showConfirmButton: true
+              });
+          }
+      });
+  }
+
+  // Call the function to get the total price when the page loads
+  $(document).ready(function() {
+      getTotalPrice();
+  });
 
     function getDataWithMonth(){
           const month = $("input[name='month']").val();

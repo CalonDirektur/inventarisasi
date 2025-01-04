@@ -32,6 +32,13 @@ class CustomerController extends Controller
             -> make(true);
         }
     }
+    public function getCustomerNames()
+    {
+        // Fetch customer names from the database
+        $customers = Customer::select('name')->get(); // Assuming you have a Customer model
+
+        return response()->json($customers);
+    }
 
     public function save(CreateCustomerRequest $request): JsonResponse
     {

@@ -6,9 +6,20 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\GoodsIn;
 use App\Models\GoodsOut;
+use App\Models\Item;
+
 
 class ReportFinancialController extends Controller
 {
+    public function getTotalPrice()
+    {
+        // Calculate the total price of all items
+        $totalPrice = Item::sum('price'); // Assuming you have an Item model
+
+        return response()->json(['total' => $totalPrice]);
+    }
+
+    
     public function income(Request $request): JsonResponse
     {
         if($request->has('month') && !empty($request->month) ){

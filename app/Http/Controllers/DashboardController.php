@@ -35,3 +35,4 @@ class DashboardController extends Controller
         'brand_count','goodsin','goodsout','customer','supplier','staffCount'));
     }
 }
+ 

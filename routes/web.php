@@ -19,6 +19,19 @@ use App\Http\Controllers\WebSettingController;
 use App\Http\Controllers\AdminatorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportFinancialController;
+use App\Http\Controllers\PeminjamanController;
+
+// Define the routes for Peminjaman directly
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman.index');
+Route::get('/peminjaman/create', [PeminjamanController::class, 'create'])->name('peminjaman.create');
+Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman.store');
+Route::get('/peminjaman/{id}', [PeminjamanController::class, 'show'])->name('peminjaman.show');
+Route::get('/peminjaman/{id}/edit', [PeminjamanController::class, 'edit'])->name('peminjaman.edit');
+Route::put('/peminjaman/{id}', [PeminjamanController::class, 'update'])->name('peminjaman.update');
+Route::delete('/peminjaman/{id}', [PeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
+Route::get('/peminjaman/{id}/signature', [PeminjamanController::class, 'signature'])->name('peminjaman.signature');
+Route::post('/peminjaman/{id}/signature', [PeminjamanController::class, 'saveSignature'])->name('peminjaman.signature.save');
+Route::get('barang/code/{code}', [ItemController::class, 'showByCode'])->name('barang.showByCode');
 
 Route::middleware(["localization"])->group(function () {
     Route::get('/', [LoginController::class, 'index'])->name('login');
@@ -28,38 +41,23 @@ Route::middleware(["localization"])->group(function () {
 Route::middleware(['auth', "localization"])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // barang
+    // Barang Routes
     Route::controller(ItemController::class)->prefix("barang")->group(function () {
         Route::get('/', 'index')->name('barang');
         Route::post('/kode', 'detailByCode')->name('barang.code');
         Route::get('/daftar-barang', 'list')->name('barang.list');
-        Route::post('/detail', 'detail')->name('barang.detail'); // Changed to /detail
-    
+        Route::post('/detail', 'detail')->name('barang.detail');
+
         Route::middleware(['employee.middleware'])->group(function () {
             Route::post('/simpan', 'save')->name('barang.save');
-            // Removed the conflicting detail route
             Route::post('/ubah', 'update')->name('barang.update');
             Route::delete('/hapus', 'delete')->name('barang.delete');
         });
     });
-    
-    // Route::controller(ItemController::class)->prefix("barang")->group(function () {
-    //     Route::get('/', 'index')->name('barang');
-    //     Route::post('/kode', 'detailByCode')->name('barang.code');
-    //     Route::get('/daftar-barang', 'list')->name('barang.list');
-    //     Route::post('/barang/detail', [ItemController::class, 'detail'])->name('barang.detail');
 
+    // Route::get('barang/code/{code}', [ItemController::class, 'showByCode'])->name('barang.showByCode');
 
-    //     Route::middleware(['employee.middleware'])->group(function () {
-    //         Route::post('/simpan', 'save')->name('barang.save');
-    //         Route::post('/info', 'detail')->name('barang.detail');
-    //         Route::post('/ubah', 'update')->name('barang.update');
-    //         Route::delete('/hapus', 'delete')->name('barang.delete');
-    //     });
-    // });
-
-
-    // jenis barang
+    // Jenis Barang Routes
     Route::controller(CategoryController::class)->prefix("barang/jenis")->group(function () {
         Route::get('/', 'index')->name('barang.jenis');
         Route::get('/daftar', 'list')->name('barang.jenis.list');
@@ -71,10 +69,7 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-
-
-
-    // satuan barang
+    // Satuan Barang Routes
     Route::controller(UnitController::class)->prefix('/barang/satuan')->group(function () {
         Route::get('/', 'index')->name('barang.satuan');
         Route::get('/daftar', 'list')->name('barang.satuan.list');
@@ -86,9 +81,7 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-
-
-    // merk barang
+    // Merk Barang Routes
     Route::controller(BrandController::class)->prefix("/barang/merk")->group(function () {
         Route::get('/', 'index')->name('barang.merk');
         Route::get('/daftar', 'list')->name('barang.merk.list');
@@ -100,11 +93,11 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-
-    // customer (izin untuk staff hanya read)
+    // Customer Routes
     Route::controller(CustomerController::class)->prefix('/customer')->group(function () {
         Route::get('/', 'index')->name('customer');
         Route::get('/daftar', 'list')->name('customer.list');
+        Route::get('/names', 'getCustomerNames')->name('customer.names');
         Route::middleware(['employee.middleware'])->group(function () {
             Route::post('/simpan', 'save')->name('customer.save');
             Route::post('/info', 'detail')->name('customer.detail');
@@ -113,8 +106,7 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-
-    // supplier (izin untuk staff hanya read)
+    // Supplier Routes
     Route::controller(SupplierController::class)->prefix('/supplier')->group(function () {
         Route::get('/', 'index')->name('supplier');
         Route::get('/daftar', 'list')->name('supplier.list');
@@ -126,7 +118,7 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-    // Transaksi  masuk
+    // Transaksi Masuk Routes
     Route::controller(TransactionInController::class)->prefix('/transaksi/masuk')->group(function () {
         Route::get('/', 'index')->name('transaksi.masuk');
         Route::get('/list', 'list')->name('transaksi.masuk.list');
@@ -137,9 +129,7 @@ Route::middleware(['auth', "localization"])->group(function () {
         Route::get('/barang/list/in', 'listIn')->name('barang.list.in');
     });
 
-
-
-    // Transaksi keluar
+    // Transaksi Keluar Routes
     Route::controller(TransactionOutController::class)->prefix('/transaksi/keluar')->group(function () {
         Route::get('/', 'index')->name('transaksi.keluar');
         Route::get('/list', 'list')->name('transaksi.keluar.list');
@@ -149,29 +139,30 @@ Route::middleware(['auth', "localization"])->group(function () {
         Route::delete('/hapus', 'delete')->name('transaksi.keluar.delete');
     });
 
-    // laporan barang masuk
+    // Laporan Barang Masuk Routes
     Route::controller(ReportGoodsInController::class)->prefix('/laporan/masuk')->group(function () {
         Route::get('/', 'index')->name('laporan.masuk');
         Route::get('/list', 'list')->name('laporan.masuk.list');
     });
 
-    // laporan barang keluar
+    // Laporan Barang Keluar Routes
     Route::controller(ReportGoodsOutController::class)->prefix('/laporan/keluar')->group(function () {
         Route::get('/', 'index')->name('laporan.keluar');
         Route::get('/list', 'list')->name('laporan.keluar.list');
     });
 
-    // laporan stok barang
+    // Laporan Stok Barang Routes
     Route::controller(ReportStockController::class)->prefix('/laporan/stok')->group(function () {
         Route::get('/', 'index')->name('laporan.stok');
         Route::get('/list', 'list')->name('laporan.stok.list');
         Route::get('/grafik', 'grafik')->name('laporan.stok.grafik');
     });
 
-    // laporan penghasilan
+    // Laporan Penghasilan
     Route::get('/report/income', [ReportFinancialController::class, 'income'])->name('laporan.pendapatan');
+    Route::get('/total-price', [ReportFinancialController::class, 'getTotalPrice'])->name('total.price');
 
-    // pengaturan pengguna
+    // Pengaturan Pengguna
     Route::middleware(['employee.middleware'])->group(function () {
         Route::controller(EmployeeController::class)->prefix('/settings/employee')->group(function () {
             Route::get('/', 'index')->name('settings.employee');
@@ -183,15 +174,11 @@ Route::middleware(['auth', "localization"])->group(function () {
         });
     });
 
-    // Route::get('/pengaturan/web',[WebSettingController::class,'index'])->name('settings.web');
-    // Route::get('/pengaturan/web/detail',[WebSettingController::class,'detail'])->name('settings.web.detail');
-    // Route::post('/pengaturan/web/detail/role',[WebSettingController::class,'detailRole'])->name('settings.web.detail.role');
-    // Route::put('/pengaturan/web/update',[WebSettingController::class,'update'])->name('settings.web.update');
-
-    // pengaturan profile
+    // Pengaturan Profile
     Route::get('/settings/profile', [ProfileController::class, 'index'])->name('settings.profile');
     Route::post('/settings/profile', [ProfileController::class, 'update'])->name('settings.profile.update');
 
-    // logout
+    // Logout
     Route::get('/logout', [LoginController::class, 'logout'])->name('login.delete');
+    Route::get('/items/{id}', [ItemController::class, 'show']);
 });
